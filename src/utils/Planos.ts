@@ -5,15 +5,6 @@ export const FALEMAIS30TEMPO = 30;
 export const FALEMAIS60TEMPO = 60;
 export const FALEMAIS120TEMPO = 120;
 
-export const TabelaPreco = [
-  { origem: '011', destino: '016', preco_minuto: 1.90 },
-  { origem: '016', destino: '011', preco_minuto: 2.90 },
-  { origem: '011', destino: '017', preco_minuto: 1.70 },
-  { origem: '017', destino: '011', preco_minuto: 2.70 },
-  { origem: '011', destino: '018', preco_minuto: 0.90 },
-  { origem: '018', destino: '011', preco_minuto: 1.90 },
-];
-
 export function geraTaxa(origem: string, destino: string) {
   let taxa = 0;
   if (origem === '011' && destino === '016') {
@@ -41,3 +32,5 @@ export function validaCodigo(codigo: string) {
   }
   return false;
 }
+
+

@@ -21,7 +21,6 @@ function App() {
   const [valorSemPlano, setValorSemPlano] = useState(0);
   const [exibeErro, setExibeErro] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
-  // const [erroLista, setErroLista] = useState<string[]>([]);
 
   function onSubmitHandler(event: FormEvent) {
     event.preventDefault();
@@ -38,55 +37,42 @@ function App() {
     let tempoConvertido = parseInt(tempo);
     let taxa = geraTaxa(codigoOrigem, codigoDestino);
     let valor = taxa * tempoConvertido;
-    let valorTaxa10Por100 = parseInt(((taxa*10)/100).toFixed(2));
+    setValorSemPlano(valor);
+    let valorTaxa10Por100 = parseFloat(((taxa*10)/100).toFixed(2));
     let valorTaxaFinal = valorTaxa10Por100 + taxa;
-    // let valorComTaxaAcrescimo = valorTaxaFinal * tempoConvertido;
     
-    if (plano === FALEMAIS30) {
-      if (tempoConvertido > FALEMAIS30TEMPO) {        
-        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
-        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
-        setValorComPlano(valorTempoExtraComTaxa);
-        // setValorComPlano(valorComTaxaAcrescimo);
-      }
-    } else if (plano === FALEMAIS60) {
-      if (tempoConvertido > FALEMAIS60TEMPO) {
-        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
-        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
-        setValorComPlano(valorTempoExtraComTaxa);
-        // setValorComPlano(valorComTaxaAcrescimo);
-      }
-    } else if (plano === FALEMAIS120) {
-      if (tempoConvertido > FALEMAIS120TEMPO) {
-        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
-        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
-        setValorComPlano(valorTempoExtraComTaxa);
-        // setValorComPlano(valorComTaxaAcrescimo);
-      }
+    if (plano === FALEMAIS30 && tempoConvertido > FALEMAIS30TEMPO) {
+      let tempoExtra = tempoConvertido - FALEMAIS30TEMPO;
+      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      setValorComPlano(valorTempoExtraComTaxa);
+    } else if (plano === FALEMAIS60 && tempoConvertido > FALEMAIS60TEMPO) {
+      let tempoExtra = tempoConvertido - FALEMAIS60TEMPO;
+      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      setValorComPlano(valorTempoExtraComTaxa);
+    } else if (plano === FALEMAIS120 && tempoConvertido > FALEMAIS120TEMPO) {
+      let tempoExtra = tempoConvertido - FALEMAIS120TEMPO;
+      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      setValorComPlano(valorTempoExtraComTaxa);
     } else {
       setValorComPlano(0);
     }
-    setValorSemPlano(valor);
+    
+    limparFormulario();
+  }
 
+  function limparFormulario() {
     setCodigoOrigem('');
     setCodigoDestino('');
     setTempo('');
     setPlano('');
     setExibeErro(false);
     setMensagemErro('');
-    // setErroLista([]);
   }
 
   function limparCampos() {
-    setCodigoOrigem('');
-    setCodigoDestino('');
-    setTempo('');
-    setPlano('');
+    limparFormulario();
     setValorComPlano(0);
     setValorSemPlano(0);
-    setExibeErro(false);
-    setMensagemErro('');
-    // setErroLista([]);
   }
   
   return (
@@ -124,14 +110,14 @@ function App() {
         </FormGroup>
         <FormGroup>
           <Input
-          type="number"
-          name="destino"
-          id="destino"
-          placeholder="Codigo cidade de destino"
-          value={codigoDestino}
-          onChange={event => setCodigoDestino(event.target.value)}
-          required
-        />
+            type="number"
+            name="destino"
+            id="destino"
+            placeholder="Codigo cidade de destino"
+            value={codigoDestino}
+            onChange={event => setCodigoDestino(event.target.value)}
+            required
+          />
         </FormGroup>
         <FormGroup>
           <Input

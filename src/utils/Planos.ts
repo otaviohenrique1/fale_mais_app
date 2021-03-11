@@ -32,5 +32,3 @@ export function validaCodigo(codigo: string) {
   }
   return false;
 }
-
-

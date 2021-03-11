@@ -3,15 +3,6 @@ import { Form, Label, Input, Container, Button, FormGroup, Row, Col, ListGroup, 
 import './App.css';
 import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa, validaCodigo } from "./utils/Planos";
 
-/*
-  De graça ate determinado tempo em minutos e só paga os minutos excedentes
-  Minutos excedentes tem um acrescimo de 10% sobre a tarifa normal do minuto
-  Planos:
-    - FaleMais30 (30 minutos)
-    - FaleMais60 (60 minutos)
-    - FaleMais120 (120 minutos)
-*/
-
 function App() {
   const [codigoOrigem, setCodigoOrigem] = useState('');
   const [codigoDestino, setCodigoDestino] = useState('');
@@ -40,18 +31,20 @@ function App() {
     setValorSemPlano(valor);
     let valorTaxa10Por100 = parseFloat(((taxa*10)/100).toFixed(2));
     let valorTaxaFinal = valorTaxa10Por100 + taxa;
+    let tempoExtra = 0;
+    let valorTempoExtraComTaxa = 0;
     
     if (plano === FALEMAIS30 && tempoConvertido > FALEMAIS30TEMPO) {
-      let tempoExtra = tempoConvertido - FALEMAIS30TEMPO;
-      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      tempoExtra = tempoConvertido - FALEMAIS30TEMPO;
+      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
       setValorComPlano(valorTempoExtraComTaxa);
     } else if (plano === FALEMAIS60 && tempoConvertido > FALEMAIS60TEMPO) {
-      let tempoExtra = tempoConvertido - FALEMAIS60TEMPO;
-      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      tempoExtra = tempoConvertido - FALEMAIS60TEMPO;
+      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
       setValorComPlano(valorTempoExtraComTaxa);
     } else if (plano === FALEMAIS120 && tempoConvertido > FALEMAIS120TEMPO) {
-      let tempoExtra = tempoConvertido - FALEMAIS120TEMPO;
-      let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+      tempoExtra = tempoConvertido - FALEMAIS120TEMPO;
+      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
       setValorComPlano(valorTempoExtraComTaxa);
     } else {
       setValorComPlano(0);

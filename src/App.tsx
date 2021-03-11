@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
-import { Form, Label, Input, Container, Button, FormGroup, Row, Col, ListGroup, ListGroupItem, ButtonGroup } from "reactstrap";
+import { Form, Label, Input, Container, Button, FormGroup, Row, Col, ListGroup, ListGroupItem, ButtonGroup, Alert } from "reactstrap";
 import './App.css';
-import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa } from "./utils/Planos";
+import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa, validaCodigo } from "./utils/Planos";
 
 /*
   De graça ate determinado tempo em minutos e só paga os minutos excedentes
@@ -19,32 +19,50 @@ function App() {
   const [plano, setPlano] = useState('');
   const [valorComPlano, setValorComPlano] = useState(0);
   const [valorSemPlano, setValorSemPlano] = useState(0);
+  const [exibeErro, setExibeErro] = useState(false);
+  const [mensagemErro, setMensagemErro] = useState('');
+  // const [erroLista, setErroLista] = useState<string[]>([]);
 
   function onSubmitHandler(event: FormEvent) {
     event.preventDefault();
-    // alert(`
-    //   ${codigoOrigem}
-    //   ${codigoDestino}
-    //   ${tempo}
-    //   ${plano}
-    //   ${valorComPlano}
-    //   ${valorSemPlano}
-    // `);
+    if (!validaCodigo(codigoOrigem)) {
+      setExibeErro(true);
+      setMensagemErro('Codigo da origem invalido');
+      return;
+    } else if (!validaCodigo(codigoDestino)) {
+      setExibeErro(true);
+      setMensagemErro('Codigo do destino invalido');
+      return;
+    }
 
+    let tempoConvertido = parseInt(tempo);
     let taxa = geraTaxa(codigoOrigem, codigoDestino);
-    let valor = taxa * parseInt(tempo);
+    let valor = taxa * tempoConvertido;
     let valorTaxa10Por100 = parseInt(((taxa*10)/100).toFixed(2));
     let valorTaxaFinal = valorTaxa10Por100 + taxa;
-    let valorComTaxaAcrescimo = valorTaxaFinal * parseInt(tempo);
-
-    if (plano === FALEMAIS30 && parseInt(tempo) > FALEMAIS30TEMPO) {
-      setValorComPlano(valorComTaxaAcrescimo);
-    }
-    if (plano === FALEMAIS60 && parseInt(tempo) > FALEMAIS60TEMPO) {
-      setValorComPlano(valorComTaxaAcrescimo);
-    }
-    if (plano === FALEMAIS120 && parseInt(tempo) > FALEMAIS120TEMPO) {
-      setValorComPlano(valorComTaxaAcrescimo);
+    // let valorComTaxaAcrescimo = valorTaxaFinal * tempoConvertido;
+    
+    if (plano === FALEMAIS30) {
+      if (tempoConvertido > FALEMAIS30TEMPO) {        
+        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
+        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+        setValorComPlano(valorTempoExtraComTaxa);
+        // setValorComPlano(valorComTaxaAcrescimo);
+      }
+    } else if (plano === FALEMAIS60) {
+      if (tempoConvertido > FALEMAIS60TEMPO) {
+        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
+        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+        setValorComPlano(valorTempoExtraComTaxa);
+        // setValorComPlano(valorComTaxaAcrescimo);
+      }
+    } else if (plano === FALEMAIS120) {
+      if (tempoConvertido > FALEMAIS120TEMPO) {
+        let tempoExtra = FALEMAIS30TEMPO - tempoConvertido;
+        let valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+        setValorComPlano(valorTempoExtraComTaxa);
+        // setValorComPlano(valorComTaxaAcrescimo);
+      }
     } else {
       setValorComPlano(0);
     }
@@ -53,7 +71,10 @@ function App() {
     setCodigoOrigem('');
     setCodigoDestino('');
     setTempo('');
-    // setPlano('');
+    setPlano('');
+    setExibeErro(false);
+    setMensagemErro('');
+    // setErroLista([]);
   }
 
   function limparCampos() {
@@ -63,11 +84,17 @@ function App() {
     setPlano('');
     setValorComPlano(0);
     setValorSemPlano(0);
+    setExibeErro(false);
+    setMensagemErro('');
+    // setErroLista([]);
   }
   
   return (
     <Container className="App">
       <h1>Calculo do valor da ligação</h1>
+      {(exibeErro) && <Alert color="danger">
+        {mensagemErro}  
+      </Alert>}
       <Form onSubmit={onSubmitHandler}>
         <FormGroup>
           <Input
@@ -76,8 +103,9 @@ function App() {
             type="select"
             value={plano}
             onChange={event => setPlano(event.target.value)}
+            required
           >
-            <option value="Selecione">Selecione um plano</option>
+            <option value="">Selecione um plano</option>
             <option value={FALEMAIS30}>{FALEMAIS30}</option>
             <option value={FALEMAIS60}>{FALEMAIS60}</option>
             <option value={FALEMAIS120}>{FALEMAIS120}</option>

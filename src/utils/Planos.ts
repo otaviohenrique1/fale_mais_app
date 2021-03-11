@@ -5,16 +5,6 @@ export const FALEMAIS30TEMPO = 30;
 export const FALEMAIS60TEMPO = 60;
 export const FALEMAIS120TEMPO = 120;
 
-export function CalculaTaxaMinutosExcedidos(taxa: number) {
-  let resultado = ((taxa*10)/100).toFixed(2);
-  return resultado;
-}
-
-export function CalculaValorSemPlano(taxa: number, tempo: number) {
-  let resultado = (taxa * tempo);
-  return resultado;
-}
-
 export const TabelaPreco = [
   { origem: '011', destino: '016', preco_minuto: 1.90 },
   { origem: '016', destino: '011', preco_minuto: 2.90 },
@@ -42,27 +32,7 @@ export function geraTaxa(origem: string, destino: string) {
   return taxa;
 }
 
-export function analisaLigacao(plano: String, tempo: number, origem: string, destino: string) {
-  if (plano === FALEMAIS30 && tempo > FALEMAIS30TEMPO) {
-    let taxa = geraTaxa(origem, destino);
-    let valor = CalculaValorSemPlano(taxa, tempo);
-    return valor;
-    // let taxaValor = CalculaTaxaMinutosExcedidos(valor);
-    // let valorFinal = valor + taxaValor;
-    // return valorFinal;
-  }
-  // if (plano === FALEMAIS60 && tempo > FALEMAIS60TEMPO) {
-  //   let taxaValor = CalculaTaxaMinutosExcedidos(valor);
-  //   let valorFinal = valor + taxaValor;
-  //   return valorFinal;
-  // }
-  // if (plano === FALEMAIS120 && tempo > FALEMAIS120TEMPO) {
-  //   let taxaValor = CalculaTaxaMinutosExcedidos(valor);
-  //   let valorFinal = valor + taxaValor;
-  //   return valorFinal;
-  // }
-  return 0;
-}
+const codigos = ['011', '016', '017', '018'];
 
 export function validaCodigo(codigo: string) {
   let codigoValidado = codigos.find((item) => item === codigo);

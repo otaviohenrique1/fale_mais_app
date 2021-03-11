@@ -1,9 +1,10 @@
 import { FormEvent, useState } from "react";
 import { Form, Label, Input, Container, Button, FormGroup, Row, Col, ListGroup, ListGroupItem, ButtonGroup } from "reactstrap";
 import './App.css';
-import { FALEMAIS30, FALEMAIS60, FALEMAIS120 } from "./utils/Planos";
+import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa } from "./utils/Planos";
 
 /*
+  De graça ate determinado tempo em minutos e só paga os minutos excedentes
   Minutos excedentes tem um acrescimo de 10% sobre a tarifa normal do minuto
   Planos:
     - FaleMais30 (30 minutos)
@@ -21,18 +22,38 @@ function App() {
 
   function onSubmitHandler(event: FormEvent) {
     event.preventDefault();
-    alert(`
-      ${codigoOrigem}
-      ${codigoDestino}
-      ${tempo}
-      ${plano}
-      ${valorComPlano}
-      ${valorSemPlano}
-    `);
+    // alert(`
+    //   ${codigoOrigem}
+    //   ${codigoDestino}
+    //   ${tempo}
+    //   ${plano}
+    //   ${valorComPlano}
+    //   ${valorSemPlano}
+    // `);
+
+    let taxa = geraTaxa(codigoOrigem, codigoDestino);
+    let valor = taxa * parseInt(tempo);
+    let valorTaxa10Por100 = parseInt(((taxa*10)/100).toFixed(2));
+    let valorTaxaFinal = valorTaxa10Por100 + taxa;
+    let valorComTaxaAcrescimo = valorTaxaFinal * parseInt(tempo);
+
+    if (plano === FALEMAIS30 && parseInt(tempo) > FALEMAIS30TEMPO) {
+      setValorComPlano(valorComTaxaAcrescimo);
+    }
+    if (plano === FALEMAIS60 && parseInt(tempo) > FALEMAIS60TEMPO) {
+      setValorComPlano(valorComTaxaAcrescimo);
+    }
+    if (plano === FALEMAIS120 && parseInt(tempo) > FALEMAIS120TEMPO) {
+      setValorComPlano(valorComTaxaAcrescimo);
+    } else {
+      setValorComPlano(0);
+    }
+    setValorSemPlano(valor);
 
     setCodigoOrigem('');
     setCodigoDestino('');
     setTempo('');
+    // setPlano('');
   }
 
   function limparCampos() {

@@ -32,3 +32,11 @@ export function validaCodigo(codigo: string) {
   }
   return false;
 }
+
+export function calculaValorTempoExtraComTaxa(tempo: number, tempoPlano: number, taxa: number) {
+  return (tempo - tempoPlano) * taxa
+}
+
+export function calculaValorSemPlano(taxa: number,tempo: number) {
+  return taxa * tempo;
+}

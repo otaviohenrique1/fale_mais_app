@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Form, Label, Input, Container, Button, FormGroup, Row, Col, ListGroup, ListGroupItem, ButtonGroup, Alert } from "reactstrap";
 import './App.css';
-import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa, validaCodigo } from "./utils/Planos";
+import { FALEMAIS30, FALEMAIS60, FALEMAIS120, FALEMAIS120TEMPO, FALEMAIS30TEMPO, FALEMAIS60TEMPO, geraTaxa as geraTaxaPeloCodigo, validaCodigo, calculaValorTempoExtraComTaxa, calculaValorSemPlano } from "./utils/Planos";
 
 function App() {
   const [codigoOrigem, setCodigoOrigem] = useState('');
@@ -26,25 +26,26 @@ function App() {
     }
 
     let tempoConvertido = parseInt(tempo);
-    let taxa = geraTaxa(codigoOrigem, codigoDestino);
-    let valor = taxa * tempoConvertido;
+    let taxa = geraTaxaPeloCodigo(codigoOrigem, codigoDestino);
+    let valor = calculaValorSemPlano(taxa, tempoConvertido);
     setValorSemPlano(valor);
+
     let valorTaxa10Por100 = parseFloat(((taxa*10)/100).toFixed(2));
     let valorTaxaFinal = valorTaxa10Por100 + taxa;
-    let tempoExtra = 0;
     let valorTempoExtraComTaxa = 0;
     
-    if (plano === FALEMAIS30 && tempoConvertido > FALEMAIS30TEMPO) {
-      tempoExtra = tempoConvertido - FALEMAIS30TEMPO;
-      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+    const validaPlanoFaleMais30MinutosExcedentes = plano === FALEMAIS30 && tempoConvertido > FALEMAIS30TEMPO;
+    const validaPlanoFaleMais60MinutosExcedentes = plano === FALEMAIS60 && tempoConvertido > FALEMAIS60TEMPO;
+    const validaPlano120FaleMaisMinutosExcedentes = plano === FALEMAIS120 && tempoConvertido > FALEMAIS120TEMPO;
+
+    if (validaPlanoFaleMais30MinutosExcedentes) {
+      valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(tempoConvertido, FALEMAIS30TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
-    } else if (plano === FALEMAIS60 && tempoConvertido > FALEMAIS60TEMPO) {
-      tempoExtra = tempoConvertido - FALEMAIS60TEMPO;
-      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+    } else if (validaPlanoFaleMais60MinutosExcedentes) {
+      valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(tempoConvertido, FALEMAIS60TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
-    } else if (plano === FALEMAIS120 && tempoConvertido > FALEMAIS120TEMPO) {
-      tempoExtra = tempoConvertido - FALEMAIS120TEMPO;
-      valorTempoExtraComTaxa = valorTaxaFinal * tempoExtra;
+    } else if (validaPlano120FaleMaisMinutosExcedentes) {
+      valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(tempoConvertido, FALEMAIS120TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
     } else {
       setValorComPlano(0);

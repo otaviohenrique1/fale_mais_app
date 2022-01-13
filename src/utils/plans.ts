@@ -33,6 +33,23 @@ export function calculaValorTempoExtraComTaxa(tempo: number, tempoPlano: number,
   return (tempo - tempoPlano) * taxa
 }
 
-export function calculaValorSemPlano(taxa: number, tempo: number) {
-  return taxa * tempo;
+export function calculaValorSemPlano(tempo: number, codigo_origem: string, codigo_destino: string) {
+  let taxa = generateTax(codigo_origem, codigo_destino);
+  let resultado = taxa * tempo;
+  return resultado;
+}
+
+export function calculaValorComPlano(tempo: number, codigo_origem: string, codigo_destino: string, plano: string) {
+  let taxa = generateTax(codigo_origem, codigo_destino);
+  let valorTaxa10Porcento = parseFloat(((taxa * 10) / 100).toFixed(2));
+  let valorTaxaFinal = valorTaxa10Porcento + taxa;
+
+  if (plano === FALEMAIS30 && tempo > FALEMAIS30TEMPO) {
+    return calculaValorTempoExtraComTaxa(tempo, FALEMAIS30TEMPO, valorTaxaFinal);
+  } else if (plano === FALEMAIS60 && tempo > FALEMAIS60TEMPO) {
+    return calculaValorTempoExtraComTaxa(tempo, FALEMAIS60TEMPO, valorTaxaFinal);
+  } else if (plano === FALEMAIS120 && tempo > FALEMAIS120TEMPO) {
+    return calculaValorTempoExtraComTaxa(tempo, FALEMAIS120TEMPO, valorTaxaFinal);
+  }
+  return 0;
 }

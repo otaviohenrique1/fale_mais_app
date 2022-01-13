@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Container, ButtonGroup, Button, ListGroup, Row, Col, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
-import { calculaValorSemPlano, codes, calculaValorComPlano } from "../../utils/plans";
+import { calculateValueWithoutPlan, cityCodes, calculateValueWithPlan } from "../../utils/plans";
 import * as Yup from "yup";
 import { Formik, FormikHelpers, Form } from "formik";
 import { TextInput } from "../../components/TextInput";
@@ -8,40 +8,40 @@ import { SelectInput } from "../../components/SelectInput";
 import { ListItem } from "../../components/ListItem";
 
 interface FormTypes {
-  plano: string;
-  codigo_origem: string;
-  codigo_destino: string;
-  tempo: string;
+  plan: string;
+  origin: string;
+  destination: string;
+  time: string;
 }
 
 const initialValues: FormTypes = {
-  plano: "",
-  codigo_origem: "",
-  codigo_destino: "",
-  tempo: ""
+  plan: "",
+  origin: "",
+  destination: "",
+  time: ""
 };
 
 const validationSchema = Yup.object().shape({
-  plano: Yup.string().required('Campo vazio ou inválido'),
-  codigo_origem: Yup.string()
+  plan: Yup.string().required('Campo vazio ou inválido'),
+  origin: Yup.string()
     .required('Campo vazio ou inválido')
-    .oneOf(codes, 'Codigo da origem invalido'),
-  codigo_destino: Yup.string()
+    .oneOf(cityCodes, 'Codigo da origem invalido'),
+  destination: Yup.string()
     .required('Campo vazio ou inválido')
-    .oneOf(codes, 'Codigo do destino invalido'),
-  tempo: Yup.string().required('Campo vazio ou inválido'),
+    .oneOf(cityCodes, 'Codigo do destino invalido'),
+  time: Yup.string().required('Campo vazio ou inválido'),
 });
 
 export function HomePage() {
-  const [valorComPlano, setValorComPlano] = useState<number>(0);
-  const [valorSemPlano, setValorSemPlano] = useState<number>(0);
+  const [valueWithoutPlan, setValueWithoutPlan] = useState<number>(0);
+  const [valueWithPlan, setvalueWithPlan] = useState<number>(0);
 
   function onSubmit(values: FormTypes, formikHelpers: FormikHelpers<FormTypes>) {
-    let resultadoValorComPlano = calculaValorComPlano(parseFloat(values.tempo), values.codigo_origem, values.codigo_destino, values.plano);
-    let resultadoValorSemPlano = calculaValorSemPlano(parseFloat(values.tempo), values.codigo_origem, values.codigo_destino);
+    let resultValueWithPlan = calculateValueWithPlan(parseFloat(values.time), values.origin, values.destination, values.plan);
+    let resultValueWithoutPlan = calculateValueWithoutPlan(parseFloat(values.time), values.origin, values.destination);
     
-    setValorComPlano(resultadoValorComPlano);
-    setValorSemPlano(resultadoValorSemPlano);
+    setValueWithoutPlan(resultValueWithPlan);
+    setvalueWithPlan(resultValueWithoutPlan);
 
     formikHelpers.resetForm();
   }
@@ -62,37 +62,37 @@ export function HomePage() {
               <Form>
                 <Row>
                   <SelectInput
-                    name="plano"
-                    id="plano"
-                    errors={errors.plano}
-                    touched={touched.plano}
+                    name="plan"
+                    id="plan"
+                    errors={errors.plan}
+                    touched={touched.plan}
                   />
                   <TextInput
                     type="number"
-                    name="tempo"
-                    id="tempo"
-                    value={values.tempo}
+                    name="time"
+                    id="time"
+                    value={values.time}
                     placeholder="Tempo em minutos"
-                    errors={errors.tempo}
-                    touched={touched.tempo}
+                    errors={errors.time}
+                    touched={touched.time}
                   />
                   <TextInput
                     type="text"
-                    name="codigo_origem"
-                    id="codigo_origem"
-                    value={values.codigo_origem}
+                    name="origin"
+                    id="origin"
+                    value={values.origin}
                     placeholder="Codigo cidade de origem"
-                    errors={errors.codigo_origem}
-                    touched={touched.codigo_origem}
+                    errors={errors.origin}
+                    touched={touched.origin}
                   />
                   <TextInput
                     type="text"
-                    name="codigo_destino"
-                    id="codigo_destino"
-                    value={values.codigo_destino}
+                    name="destination"
+                    id="destination"
+                    value={values.destination}
                     placeholder="Codigo cidade de destino"
-                    errors={errors.codigo_destino}
-                    touched={touched.codigo_destino}
+                    errors={errors.destination}
+                    touched={touched.destination}
                   />
                   <Col md={12} className="d-flex justify-content-end">
                     <ButtonGroup>
@@ -107,8 +107,8 @@ export function HomePage() {
         </CardBody>
         <CardFooter className="p-3">
           <ListGroup>
-            <ListItem label="Valor da ligação com o plano:" value={valorComPlano} />
-            <ListItem label="Valor da ligação sem o plano:" value={valorSemPlano} />
+            <ListItem label="Valor da ligação com o plano:" value={valueWithoutPlan} />
+            <ListItem label="Valor da ligação sem o plano:" value={valueWithPlan} />
           </ListGroup>
         </CardFooter>
       </Card>

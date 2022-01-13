@@ -1,34 +1,4 @@
-export const codes = ['011', '016', '017', '018'];
-
-const taxList = [
-  { origem: '011', destino: '016', taxa: 1.90 },
-  { origem: '016', destino: '011', taxa: 2.90 },
-  { origem: '011', destino: '017', taxa: 1.70 },
-  { origem: '017', destino: '011', taxa: 2.70 },
-  { origem: '011', destino: '018', taxa: 0.90 },
-  { origem: '018', destino: '011', taxa: 1.90 },
-];
-
-export function generateTax(origem: string, destino: string) {
-  let result = taxList.find((item) => (item.destino === destino && item.origem === origem));
-  return (result) ? result.taxa : 0;
-}
-
-
-export function calculaValorTempoExtraComTaxa(tempo: number, tempoPlano: number, taxa: number) {
-  return (tempo - tempoPlano) * taxa
-}
-
-export function calculaValorSemPlano(tempo: number, codigo_origem: string, codigo_destino: string) {
-  let taxa = generateTax(codigo_origem, codigo_destino);
-  let resultado = taxa * tempo;
-  return resultado;
-}
-
-function calculaTaxa10Porcento(taxa: number) {
-  let resultado = parseFloat(((taxa * 10) / 100).toFixed(2));
-  return resultado;
-}
+export const cityCodes = ['011', '016', '017', '018'];
 
 export const plansList = [
   { name: 'FaleMais30', time: 30 },
@@ -36,19 +6,47 @@ export const plansList = [
   { name: 'FaleMais120', time: 120 },
 ];
 
-function buscaPlano(plano: string) {
-  return plansList.find((item) => item.name === plano);
+const taxList = [
+  { origin: '011', destination: '016', tax: 1.90 },
+  { origin: '016', destination: '011', tax: 2.90 },
+  { origin: '011', destination: '017', tax: 1.70 },
+  { origin: '017', destination: '011', tax: 2.70 },
+  { origin: '011', destination: '018', tax: 0.90 },
+  { origin: '018', destination: '011', tax: 1.90 },
+];
+
+export function searchTax(origin: string, destination: string) {
+  let result = taxList.find((item) => (item.destination === destination && item.origin === origin));
+  return (result) ? result.tax : 0;
 }
 
-export function calculaValorComPlano(tempo: number, codigo_origem: string, codigo_destino: string, plano: string) {
-  let taxa = generateTax(codigo_origem, codigo_destino);
-  let valorTaxa10Porcento = calculaTaxa10Porcento(taxa);
-  let valorTaxaFinal = valorTaxa10Porcento + taxa;
+export function valueTimeWithExtraTax(time: number, plan_time: number, tax: number) {
+  return (time - plan_time) * tax
+}
 
-  let resultado = buscaPlano(plano);
+export function calculateValueWithoutPlan(time: number, origin: string, destination: string) {
+  let tax = searchTax(origin, destination);
+  let result = tax * time;
+  return result;
+}
+
+function searchPlan(plan: string) {
+  return plansList.find((item) => item.name === plan);
+}
+
+function generateTax(tax: number) {
+  let valueTax10 = parseFloat(((tax * 10) / 100).toFixed(2));
+  let result = valueTax10 + tax;
+  return result;
+}
+
+export function calculateValueWithPlan(time: number, origin: string, destination: string, plan: string) {
+  let tax = searchTax(origin, destination);
+  let valueGeneratedTax = generateTax(tax);
+  let result = searchPlan(plan);
   
-  if (resultado?.name && tempo > resultado?.time) {
-    return calculaValorTempoExtraComTaxa(tempo, resultado.time, valorTaxaFinal);
+  if (result?.name && time > result?.time) {
+    return valueTimeWithExtraTax(time, result.time, valueGeneratedTax);
   }
   return 0;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Container, ButtonGroup, Button, ListGroup, Row, Col, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
-import { calculaValorSemPlano, codigos, calculaValorComPlano } from "../../utils/plans";
+import { calculaValorSemPlano, codes, calculaValorComPlano } from "../../utils/plans";
 import * as Yup from "yup";
 import { Formik, FormikHelpers, Form } from "formik";
 import { TextInput } from "../../components/TextInput";
@@ -25,10 +25,10 @@ const validationSchema = Yup.object().shape({
   plano: Yup.string().required('Campo vazio ou inválido'),
   codigo_origem: Yup.string()
     .required('Campo vazio ou inválido')
-    .oneOf(codigos, 'Codigo da origem invalido'),
+    .oneOf(codes, 'Codigo da origem invalido'),
   codigo_destino: Yup.string()
     .required('Campo vazio ou inválido')
-    .oneOf(codigos, 'Codigo do destino invalido'),
+    .oneOf(codes, 'Codigo do destino invalido'),
   tempo: Yup.string().required('Campo vazio ou inválido'),
 });
 

@@ -1,23 +1,19 @@
 import { Field } from "formik";
 import { Alert, Col } from "reactstrap";
-// import { ColumnProps } from "reactstrap/types/lib/Col";
-import { InputType } from "reactstrap/types/lib/Input";
 
 interface TextInputProps {
-  type: InputType;
+  type: "number" | "text";
   name: string;
   id: string;
   value: string | number | readonly string[] | undefined;
   placeholder: string;
   errors: any;
   touched: any;
-  // md?: ColumnProps | undefined;
 }
 
 export function TextInput(props: TextInputProps) {
   return (
     <Col md={6} className="mb-2 d-flex flex-column">
-    {/* <Col md={props.md || 12} className="mb-2 d-flex flex-column"> */}
       <Field
         className="form-control"
         type={props.type}

@@ -42,26 +42,33 @@ export function HomePage() {
     let totalValorSemPlano = calculaValorSemPlano(taxa, timeInMinutes);
     setValorSemPlano(totalValorSemPlano);
 
-    let valorTaxa10Por100 = parseFloat(((taxa * 10) / 100).toFixed(2));
-    let valorTaxaFinal = valorTaxa10Por100 + taxa;
+    let valorTaxa10Porcento = parseFloat(((taxa * 10) / 100).toFixed(2));
+    let valorTaxaFinal = valorTaxa10Porcento + taxa;
     let valorTempoExtraComTaxa = 0;
 
-    const validaPlanoFaleMais30MinutosExcedentes = values.plano === FALEMAIS30 && timeInMinutes > FALEMAIS30TEMPO;
-    const validaPlanoFaleMais60MinutosExcedentes = values.plano === FALEMAIS60 && timeInMinutes > FALEMAIS60TEMPO;
-    const validaPlano120FaleMaisMinutosExcedentes = values.plano === FALEMAIS120 && timeInMinutes > FALEMAIS120TEMPO;
-
-    if (validaPlanoFaleMais30MinutosExcedentes) {
+    /* Arrumar essa parte */
+    if (values.plano === FALEMAIS30 && timeInMinutes > FALEMAIS30TEMPO) {
       valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(timeInMinutes, FALEMAIS30TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
-    } else if (validaPlanoFaleMais60MinutosExcedentes) {
+      console.log(`valorTempoExtraComTaxa => ${valorTempoExtraComTaxa}`);
+    } else if (values.plano === FALEMAIS60 && timeInMinutes > FALEMAIS60TEMPO) {
       valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(timeInMinutes, FALEMAIS60TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
-    } else if (validaPlano120FaleMaisMinutosExcedentes) {
+      console.log(`valorTempoExtraComTaxa => ${valorTempoExtraComTaxa}`);
+    } else if (values.plano === FALEMAIS120 && timeInMinutes > FALEMAIS120TEMPO) {
       valorTempoExtraComTaxa = calculaValorTempoExtraComTaxa(timeInMinutes, FALEMAIS120TEMPO, valorTaxaFinal);
       setValorComPlano(valorTempoExtraComTaxa);
+      console.log(`valorTempoExtraComTaxa => ${valorTempoExtraComTaxa}`);
     } else {
-      setValorComPlano(0);
+      // setValorComPlano(0);
+      console.log('Teste');
     }
+
+    // console.log(`valorTempoExtraComTaxa => ${valorTempoExtraComTaxa}`);
+    // console.log(`valorTaxa10Porcento => ${valorTaxa10Porcento}`);
+    // console.log(`valorTaxaFinal => ${valorTaxaFinal}`);
+    // console.log(`valorComPlano => ${valorComPlano}`);
+    // console.log(`valorSemPlano => ${valorSemPlano}`);
 
     formikHelpers.resetForm();
   }
@@ -92,7 +99,6 @@ export function HomePage() {
                     id="plano"
                     errors={errors.plano}
                     touched={touched.plano}
-                    md={6}
                   />
                   <TextInput
                     type="number"
@@ -102,7 +108,6 @@ export function HomePage() {
                     placeholder="Tempo em minutos"
                     errors={errors.tempo}
                     touched={touched.tempo}
-                    md={6}
                   />
                   <TextInput
                     type="text"
@@ -112,7 +117,6 @@ export function HomePage() {
                     placeholder="Codigo cidade de origem"
                     errors={errors.codigo_origem}
                     touched={touched.codigo_origem}
-                    md={6}
                   />
                   <TextInput
                     type="text"
@@ -122,7 +126,6 @@ export function HomePage() {
                     placeholder="Codigo cidade de destino"
                     errors={errors.codigo_destino}
                     touched={touched.codigo_destino}
-                    md={6}
                   />
                   <Col md={12} className="d-flex justify-content-end">
                     <ButtonGroup>
@@ -137,8 +140,8 @@ export function HomePage() {
         </CardBody>
         <CardFooter className="p-3">
           <ListGroup>
-            <ListItem label="Valor da ligação com o plano:" moneyValue={valorComPlano} />
-            <ListItem label="Valor da ligação sem o plano:" moneyValue={valorSemPlano} />
+            <ListItem label="Valor da ligação com o plano:" value={valorComPlano} />
+            <ListItem label="Valor da ligação sem o plano:" value={valorSemPlano} />
           </ListGroup>
         </CardFooter>
       </Card>

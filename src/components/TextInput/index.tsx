@@ -1,6 +1,6 @@
 import { Field } from "formik";
 import { Alert, Col } from "reactstrap";
-import { ColumnProps } from "reactstrap/types/lib/Col";
+// import { ColumnProps } from "reactstrap/types/lib/Col";
 import { InputType } from "reactstrap/types/lib/Input";
 
 interface TextInputProps {
@@ -11,12 +11,13 @@ interface TextInputProps {
   placeholder: string;
   errors: any;
   touched: any;
-  md?: ColumnProps | undefined;
+  // md?: ColumnProps | undefined;
 }
 
 export function TextInput(props: TextInputProps) {
   return (
-    <Col md={props.md || 12} className="mb-2 d-flex flex-column">
+    <Col md={6} className="mb-2 d-flex flex-column">
+    {/* <Col md={props.md || 12} className="mb-2 d-flex flex-column"> */}
       <Field
         className="form-control"
         type={props.type}

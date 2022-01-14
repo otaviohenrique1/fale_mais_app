@@ -93,6 +93,7 @@ export function FormComponent(props: FormComponentProps) {
                     name="confirm"
                     type="submit"
                     color="primary"
+                    data-testid="confirm-button"
                   >Calcular</Button>
                   <Button
                     id="clear"

@@ -1,5 +1,5 @@
 import { Field } from "formik";
-import { Alert, Col } from "reactstrap";
+import { Alert, Col, Label } from "reactstrap";
 import { plansList } from "../../utils/plans";
 
 interface SelectInputProps {
@@ -7,11 +7,13 @@ interface SelectInputProps {
   id: string;
   errors: any;
   touched: any;
+  label: string;
 }
 
 export function SelectInput(props: SelectInputProps) {
   return (
     <Col md={6} className="mb-2 d-flex flex-column">
+      <Label className="form-label" htmlFor={props.id}>{props.label}</Label>
       <Field
         className="form-select"
         name={props.name}

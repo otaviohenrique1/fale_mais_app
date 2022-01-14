@@ -1,5 +1,5 @@
 import { Field } from "formik";
-import { Alert, Col } from "reactstrap";
+import { Alert, Col, Label } from "reactstrap";
 
 interface TextInputProps {
   type: "number" | "text";
@@ -9,11 +9,13 @@ interface TextInputProps {
   placeholder: string;
   errors: any;
   touched: any;
+  label: string;
 }
 
 export function TextInput(props: TextInputProps) {
   return (
     <Col md={6} className="mb-2 d-flex flex-column">
+      <Label className="form-label" htmlFor={props.id}>{props.label}</Label>
       <Field
         className="form-control"
         type={props.type}

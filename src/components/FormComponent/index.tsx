@@ -1,5 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { Button, ButtonGroup, Col, Row } from "reactstrap";
+import { Button, ButtonGroup, CardBody, Col, Row } from "reactstrap";
 import { SelectInput } from "../SelectInput";
 import { TextInput } from "../TextInput";
 import * as Yup from "yup";
@@ -40,67 +40,73 @@ interface FormComponentProps {
 
 export function FormComponent(props: FormComponentProps) {
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={props.onSubmit}
-    >
-      {({ errors, touched, values }) => (
-        <Form>
-          <Row>
-            <SelectInput
-              name="plan"
-              id="plan"
-              errors={errors.plan}
-              touched={touched.plan}
-            />
-            <TextInput
-              type="number"
-              name="time"
-              id="time"
-              value={values.time}
-              placeholder="Tempo em minutos"
-              errors={errors.time}
-              touched={touched.time}
-            />
-            <TextInput
-              type="text"
-              name="origin"
-              id="origin"
-              value={values.origin}
-              placeholder="Codigo cidade de origem"
-              errors={errors.origin}
-              touched={touched.origin}
-            />
-            <TextInput
-              type="text"
-              name="destination"
-              id="destination"
-              value={values.destination}
-              placeholder="Codigo cidade de destino"
-              errors={errors.destination}
-              touched={touched.destination}
-            />
-            <Col md={12} className="d-flex justify-content-end">
-              <ButtonGroup>
-                <Button
-                  id="confirm"
-                  name="confirm"
-                  type="submit"
-                  color="primary"
-                >Calcular</Button>
-                <Button
-                  id="clear"
-                  name="clear"
-                  type="reset"
-                  color="danger"
-                  onClick={props.onReset}
-                >Limpar</Button>
-              </ButtonGroup>
-            </Col>
-          </Row>
-        </Form>
-      )}
-    </Formik>
+    <CardBody>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={props.onSubmit}
+      >
+        {({ errors, touched, values }) => (
+          <Form>
+            <Row>
+              <SelectInput
+                label="Plano"
+                name="plan"
+                id="plan"
+                errors={errors.plan}
+                touched={touched.plan}
+              />
+              <TextInput
+                label="Tempo"
+                type="number"
+                name="time"
+                id="time"
+                value={values.time}
+                placeholder="Tempo em minutos"
+                errors={errors.time}
+                touched={touched.time}
+              />
+              <TextInput
+                label="Codigo cidade de origem"
+                type="text"
+                name="origin"
+                id="origin"
+                value={values.origin}
+                placeholder="Codigo cidade de origem"
+                errors={errors.origin}
+                touched={touched.origin}
+              />
+              <TextInput
+                label="Codigo cidade de destino"
+                type="text"
+                name="destination"
+                id="destination"
+                value={values.destination}
+                placeholder="Codigo cidade de destino"
+                errors={errors.destination}
+                touched={touched.destination}
+              />
+              <Col md={12} className="d-flex justify-content-end">
+                <ButtonGroup>
+                  <Button
+                    id="confirm"
+                    name="confirm"
+                    type="submit"
+                    color="primary"
+                  >Calcular</Button>
+                  <Button
+                    id="clear"
+                    name="clear"
+                    type="reset"
+                    color="danger"
+                    onClick={props.onReset}
+                  >Limpar</Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </Form>
+        )}
+      </Formik>
+    </CardBody>
   );
 }

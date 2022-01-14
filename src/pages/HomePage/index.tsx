@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, ListGroup, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
+import { Container, ListGroup, Card, CardHeader, CardFooter } from "reactstrap";
 import { calculateValueWithoutPlan, calculateValueWithPlan } from "../../utils/plans";
 import { FormikHelpers } from "formik";
 import { ListItem } from "../../components/ListItem";
@@ -30,9 +30,7 @@ export function HomePage() {
         <CardHeader>
           <h1 className="w-100 mb-5 text-center">Calculo do valor da ligação</h1>
         </CardHeader>
-        <CardBody>
-          <FormComponent onSubmit={onSubmit} onReset={onReset} />
-        </CardBody>
+        <FormComponent onSubmit={onSubmit} onReset={onReset} />
         <CardFooter className="p-3">
           <ListGroup>
             <ListItem label="Valor da ligação com o plano:" value={valueWithoutPlan} />

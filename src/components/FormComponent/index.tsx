@@ -20,15 +20,17 @@ const initialValues: FormTypes = {
   time: ""
 };
 
+const emptyFieldMessage = 'Campo vazio ou inválido';
+
+function invalidFieldMessage(text: string) {
+  return `Código da ${text} inválido`;
+}
+
 const validationSchema = Yup.object().shape({
-  plan: Yup.string().required('Campo vazio ou inválido'),
-  origin: Yup.string()
-    .required('Campo vazio ou inválido')
-    .oneOf(cityCodes, 'Codigo da origem invalido'),
-  destination: Yup.string()
-    .required('Campo vazio ou inválido')
-    .oneOf(cityCodes, 'Codigo do destino invalido'),
-  time: Yup.string().required('Campo vazio ou inválido'),
+  plan: Yup.string().required(emptyFieldMessage),
+  origin: Yup.string().required(emptyFieldMessage).oneOf(cityCodes, invalidFieldMessage('origem')),
+  destination: Yup.string().required(emptyFieldMessage).oneOf(cityCodes, invalidFieldMessage('destino')),
+  time: Yup.string().required(emptyFieldMessage),
 });
 
 interface FormComponentProps {
@@ -81,8 +83,19 @@ export function FormComponent(props: FormComponentProps) {
             />
             <Col md={12} className="d-flex justify-content-end">
               <ButtonGroup>
-                <Button id="confirm" type="submit" color="primary" >Calcular</Button>
-                <Button id="clear" type="reset" color="danger" onClick={props.onReset} >Limpar</Button>
+                <Button
+                  id="confirm"
+                  name="confirm"
+                  type="submit"
+                  color="primary"
+                >Calcular</Button>
+                <Button
+                  id="clear"
+                  name="clear"
+                  type="reset"
+                  color="danger"
+                  onClick={props.onReset}
+                >Limpar</Button>
               </ButtonGroup>
             </Col>
           </Row>

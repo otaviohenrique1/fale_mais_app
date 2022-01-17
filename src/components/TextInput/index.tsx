@@ -24,7 +24,7 @@ export function TextInput(props: TextInputProps) {
         value={props.value}
         placeholder={props.placeholder}
       />
-      {props.errors && props.touched ? <Alert color="danger">{props.errors}</Alert> : null}
+      {props.errors && props.touched ? <Alert color="danger" data-testid="error">{props.errors}</Alert> : null}
     </Col>
   );
 }

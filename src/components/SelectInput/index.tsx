@@ -23,7 +23,7 @@ export function SelectInput(props: SelectInputProps) {
         <option value="">Selecione um plano</option>
         {plansList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)}
       </Field>
-      {props.errors && props.touched ? <Alert color="danger">{props.errors}</Alert> : null}
+      {props.errors && props.touched ? <Alert color="danger" data-testid="error">{props.errors}</Alert> : null}
     </Col>
   );
 }

@@ -12,7 +12,6 @@ test('FormComponent test', async () => {
   userEvent.type(screen.getByLabelText(/Codigo cidade de origem/i), "011");
   userEvent.type(screen.getByLabelText(/Codigo cidade de destino/i), "017");
   userEvent.click(screen.getByTestId('confirm-button'));
-  // userEvent.click(screen.getByRole('button', { name: /submit/i }));
 
   await waitFor(() => {
     expect(handleSubmit).toHaveBeenCalledWith({
@@ -23,3 +22,4 @@ test('FormComponent test', async () => {
     });
   })
 });
+
